@@ -1,0 +1,11 @@
+{
+"rules": [
+{
+"primary-output": "CMakeFiles/rbengine.dir/src/sample/ApplicationEntryPoint.cpp.o",
+"requires": [
+]
+}
+],
+"version": 0,
+"revision": 0
+}
