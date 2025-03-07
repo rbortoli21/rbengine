@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/rbengine.dir/src/main.cpp.o CMakeFiles/rbengine.dir/src/core/Application.cpp.o CMakeFiles/rbengine.dir/src/sample/ApplicationEntrypoint.cpp.o CMakeFiles/rbengine.dir/src/core/Window.cpp.o -o rbengine  /usr/lib/libSDL2main.a /usr/lib/libSDL2-2.0.so.0.3200.50
