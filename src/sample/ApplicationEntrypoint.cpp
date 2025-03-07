@@ -5,13 +5,6 @@
 #include "ApplicationEntrypoint.h"
 #include <iostream>
 
-ApplicationEntrypoint::ApplicationEntrypoint() {
-}
-
-ApplicationEntrypoint::~ApplicationEntrypoint() {
-}
-
-
 bool ApplicationEntrypoint::start() {
     std::cout << "Starting game" << std::endl;
     return true;

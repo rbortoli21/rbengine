@@ -9,9 +9,7 @@
 
 class ApplicationEntrypoint final : rbengine::Application {
 public:
-    ApplicationEntrypoint();
-
-    ~ApplicationEntrypoint() override;
+    ApplicationEntrypoint() = default;
 
     bool start() override;
 

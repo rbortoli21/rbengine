@@ -4,15 +4,18 @@
 
 #include "Application.h"
 #include <cstdlib>
+#include <SDL2/SDL.h>
 
 RB_ENGINE_NS
     Application *sharedApplication = nullptr;
 
-    Application::Application() {
+    Application::Application(): window(nullptr) {
         sharedApplication = this;
+        window = new Window("Application Window", 800, 600);
     }
 
     Application::~Application() {
+        delete window;
     }
 
     Application *Application::getInstance() {
@@ -20,12 +23,14 @@ RB_ENGINE_NS
     }
 
     int Application::run() {
-        if (!start()) {
+        if (!window->isRunning()) {
             return -1;
         }
 
-        while (!stop()) {
-            //execute game loop
+        while (window->isRunning()) {
+            window->pollEvents();
+            window->clear();
+            SDL_Delay(16);
         }
 
         return EXIT_SUCCESS;

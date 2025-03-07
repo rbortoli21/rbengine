@@ -7,6 +7,7 @@
 #define APPLICATION_H
 #include "ApplicationInterface.h"
 #include "EngineDefines.h"
+#include "Window.h"
 
 RB_ENGINE_NS
     class Application : public ApplicationInterface {
@@ -18,6 +19,9 @@ RB_ENGINE_NS
         static Application *getInstance();
 
         int run();
+
+    private:
+        Window *window{};
     };
 
 RB_ENGINE_END_NS
