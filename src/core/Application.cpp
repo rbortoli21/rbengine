@@ -14,9 +14,7 @@ RB_ENGINE_NS
         window = new Window("Application Window", 800, 600);
     }
 
-    Application::~Application() {
-        delete window;
-    }
+    Application::~Application() = default;
 
     Application *Application::getInstance() {
         return sharedApplication;
