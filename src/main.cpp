@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "sample/ApplicationEntrypoint.h"
+#include "core/Application.h"
 
 int main() {
-    ApplicationEntrypoint applicationEntryPoint;
-    return rbengine::Application::getInstance()->run();
+    const rbengine::Application application;
+    return application.run();
 }

@@ -32,7 +32,7 @@ RB_ENGINE_NS
         }
 
         *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-        if (!renderer) {
+        if (!*renderer) {
             std::cerr << "SDL_CreateRenderer failed: " << SDL_GetError() << std::endl;
             running = false;
         }

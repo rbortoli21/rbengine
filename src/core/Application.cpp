@@ -6,17 +6,8 @@
 #include "Game.h"
 
 RB_ENGINE_NS
-    Application *sharedApplication = nullptr;
-
     Application::Application() {
-        sharedApplication = this;
         game = new Game();
-    }
-
-    Application::~Application() = default;
-
-    Application *Application::getInstance() {
-        return sharedApplication;
     }
 
     int Application::run() const {

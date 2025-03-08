@@ -5,20 +5,16 @@
 
 #ifndef APPLICATION_H
 #define APPLICATION_H
-#include "ApplicationInterface.h"
 #include "EngineDefines.h"
-#include "Window.h"
 
 RB_ENGINE_NS
     class Game;
 
-    class Application : public ApplicationInterface {
+    class Application {
     public:
         Application();
 
-        ~Application() override;
-
-        static Application *getInstance();
+        ~Application() = default;
 
         [[nodiscard]] int run() const;
 
