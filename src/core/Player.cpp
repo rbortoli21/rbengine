@@ -10,6 +10,9 @@
 #include <SDL2/SDL_image.h>
 
 RB_ENGINE_NS
+    constexpr int PLAYER_WIDTH = 24;
+    constexpr int PLAYER_HEIGHT = 64;
+
     Player::Player(SDL_Renderer **renderer)
         : renderer(*renderer), texture(nullptr) {
     }
@@ -20,7 +23,7 @@ RB_ENGINE_NS
             return false;
         }
 
-        texture = loadTexture("../src/assets/monkey_run.png", renderer);
+        texture = loadTexture("../src/assets/player/idle/idle.png", renderer);
         if (!texture) {
             return false;
         }
@@ -32,10 +35,17 @@ RB_ENGINE_NS
         return true;
     }
 
-    void Player::render() {
+    void Player::render(int currentFrame) {
         handleInput();
+
+        constexpr int frameWidth = 1440 / 18;
+        constexpr int frameHeight = 80;
+
+        const SDL_Rect srcRect = {currentFrame * frameWidth, 0, frameWidth, frameHeight};
+        const SDL_Rect dstRect = {x, y, frameWidth, frameHeight};
+
         SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, texture, nullptr, new SDL_Rect(x, y, 64, 64));
+        SDL_RenderCopy(renderer, texture, &srcRect, &dstRect);
         SDL_RenderPresent(renderer);
     }
 

@@ -17,7 +17,7 @@ RB_ENGINE_NS
 
         bool init();
 
-        void render();
+        void render(int currentFrame);
 
     private:
         void handleInput();
