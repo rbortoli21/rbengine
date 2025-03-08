@@ -8,8 +8,11 @@
 #include <SDL2/SDL.h>
 
 RB_ENGINE_NS
-    Window::Window(const std::string &title, int width, int height)
-        : window(nullptr), renderer(nullptr), running(true) {
+    Window::Window(const std::string &title,
+                   const int width,
+                   const int height,
+                   SDL_Renderer **renderer)
+        : window(nullptr), renderer(*renderer), running(true) {
         if (SDL_Init(SDL_INIT_VIDEO) < 0) {
             std::cerr << "SDL_Init failed: " << SDL_GetError() << std::endl;
             running = false;
@@ -28,7 +31,7 @@ RB_ENGINE_NS
             return;
         }
 
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         if (!renderer) {
             std::cerr << "SDL_CreateRenderer failed: " << SDL_GetError() << std::endl;
             running = false;

@@ -1,0 +1,21 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "/home/bortoli/Documents/projects/rbengine/cmake-build-debug",
+	"dir-cur-src" : "/home/bortoli/Documents/projects/rbengine",
+	"dir-top-bld" : "/home/bortoli/Documents/projects/rbengine/cmake-build-debug",
+	"dir-top-src" : "/home/bortoli/Documents/projects/rbengine",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : 
+	[
+		"/usr/include/SDL2"
+	],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "/home/bortoli/Documents/projects/rbengine/cmake-build-debug/CMakeFiles/rbengine.dir"
+}

@@ -1,0 +1,11 @@
+{
+"rules": [
+{
+"primary-output": "CMakeFiles/rbengine.dir/src/core/Game.cpp.o",
+"requires": [
+]
+}
+],
+"version": 0,
+"revision": 0
+}

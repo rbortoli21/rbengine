@@ -1,0 +1,38 @@
+[
+{
+  "directory": "/home/bortoli/Documents/projects/rbengine/cmake-build-debug",
+  "command": "/usr/bin/c++ -isystem /usr/include/SDL2 -g -std=gnu++20 -fdiagnostics-color=always -fmodules-ts -fmodule-mapper=CMakeFiles/rbengine.dir/src/main.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rbengine.dir/src/main.cpp.o -c /home/bortoli/Documents/projects/rbengine/src/main.cpp",
+  "file": "/home/bortoli/Documents/projects/rbengine/src/main.cpp",
+  "output": "CMakeFiles/rbengine.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/bortoli/Documents/projects/rbengine/cmake-build-debug",
+  "command": "/usr/bin/c++ -isystem /usr/include/SDL2 -g -std=gnu++20 -fdiagnostics-color=always -fmodules-ts -fmodule-mapper=CMakeFiles/rbengine.dir/src/core/Application.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rbengine.dir/src/core/Application.cpp.o -c /home/bortoli/Documents/projects/rbengine/src/core/Application.cpp",
+  "file": "/home/bortoli/Documents/projects/rbengine/src/core/Application.cpp",
+  "output": "CMakeFiles/rbengine.dir/src/core/Application.cpp.o"
+},
+{
+  "directory": "/home/bortoli/Documents/projects/rbengine/cmake-build-debug",
+  "command": "/usr/bin/c++ -isystem /usr/include/SDL2 -g -std=gnu++20 -fdiagnostics-color=always -fmodules-ts -fmodule-mapper=CMakeFiles/rbengine.dir/src/sample/ApplicationEntrypoint.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rbengine.dir/src/sample/ApplicationEntrypoint.cpp.o -c /home/bortoli/Documents/projects/rbengine/src/sample/ApplicationEntrypoint.cpp",
+  "file": "/home/bortoli/Documents/projects/rbengine/src/sample/ApplicationEntrypoint.cpp",
+  "output": "CMakeFiles/rbengine.dir/src/sample/ApplicationEntrypoint.cpp.o"
+},
+{
+  "directory": "/home/bortoli/Documents/projects/rbengine/cmake-build-debug",
+  "command": "/usr/bin/c++ -isystem /usr/include/SDL2 -g -std=gnu++20 -fdiagnostics-color=always -fmodules-ts -fmodule-mapper=CMakeFiles/rbengine.dir/src/core/Window.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rbengine.dir/src/core/Window.cpp.o -c /home/bortoli/Documents/projects/rbengine/src/core/Window.cpp",
+  "file": "/home/bortoli/Documents/projects/rbengine/src/core/Window.cpp",
+  "output": "CMakeFiles/rbengine.dir/src/core/Window.cpp.o"
+},
+{
+  "directory": "/home/bortoli/Documents/projects/rbengine/cmake-build-debug",
+  "command": "/usr/bin/c++ -isystem /usr/include/SDL2 -g -std=gnu++20 -fdiagnostics-color=always -fmodules-ts -fmodule-mapper=CMakeFiles/rbengine.dir/src/core/Player.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rbengine.dir/src/core/Player.cpp.o -c /home/bortoli/Documents/projects/rbengine/src/core/Player.cpp",
+  "file": "/home/bortoli/Documents/projects/rbengine/src/core/Player.cpp",
+  "output": "CMakeFiles/rbengine.dir/src/core/Player.cpp.o"
+},
+{
+  "directory": "/home/bortoli/Documents/projects/rbengine/cmake-build-debug",
+  "command": "/usr/bin/c++ -isystem /usr/include/SDL2 -g -std=gnu++20 -fdiagnostics-color=always -fmodules-ts -fmodule-mapper=CMakeFiles/rbengine.dir/src/core/Game.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/rbengine.dir/src/core/Game.cpp.o -c /home/bortoli/Documents/projects/rbengine/src/core/Game.cpp",
+  "file": "/home/bortoli/Documents/projects/rbengine/src/core/Game.cpp",
+  "output": "CMakeFiles/rbengine.dir/src/core/Game.cpp.o"
+}
+]

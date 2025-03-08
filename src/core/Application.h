@@ -10,6 +10,8 @@
 #include "Window.h"
 
 RB_ENGINE_NS
+    class Game;
+
     class Application : public ApplicationInterface {
     public:
         Application();
@@ -18,10 +20,10 @@ RB_ENGINE_NS
 
         static Application *getInstance();
 
-        int run();
+        [[nodiscard]] int run() const;
 
     private:
-        Window *window{};
+        Game *game;
     };
 
 RB_ENGINE_END_NS
