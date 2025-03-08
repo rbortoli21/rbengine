@@ -17,14 +17,16 @@ RB_ENGINE_NS
 
         bool init();
 
-        void render() const;
+        void render();
 
     private:
+        void handleInput();
+
         SDL_Texture *loadTexture(const char *path, SDL_Renderer *renderer);
 
         SDL_Renderer *renderer;
         SDL_Texture *texture;
-        SDL_Rect rect;
+        int x = 0, y = 0, velocity = 0;
     };
 
 RB_ENGINE_END_NS

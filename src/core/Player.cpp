@@ -11,7 +11,7 @@
 
 RB_ENGINE_NS
     Player::Player(SDL_Renderer **renderer)
-        : renderer(*renderer), texture(nullptr), rect(0, 0, 0, 0) {
+        : renderer(*renderer), texture(nullptr) {
     }
 
     bool Player::init() {
@@ -25,18 +25,34 @@ RB_ENGINE_NS
             return false;
         }
 
-        rect.x = 100;
-        rect.y = 100;
-        rect.w = 64;
-        rect.h = 64;
+        velocity = 5;
+        x = 100;
+        y = 100;
 
         return true;
     }
 
-    void Player::render() const {
+    void Player::render() {
+        handleInput();
         SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, texture, nullptr, &rect);
+        SDL_RenderCopy(renderer, texture, nullptr, new SDL_Rect(x, y, 64, 64));
         SDL_RenderPresent(renderer);
+    }
+
+    void Player::handleInput() {
+        const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
+        if (currentKeyStates[SDL_SCANCODE_UP]) {
+            y -= velocity;
+        }
+        if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+            y += velocity;
+        }
+        if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+            x -= velocity;
+        }
+        if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+            x += velocity;
+        }
     }
 
     SDL_Texture *Player::loadTexture(const char *path, SDL_Renderer *renderer) {
