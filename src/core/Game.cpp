@@ -32,21 +32,22 @@ RB_ENGINE_NS
     }
 
     void Game::run() const {
-        int frame = 0;
         Uint32 lastTime = SDL_GetTicks();
 
         while (window->isRunning()) {
             window->pollEvents();
             window->clear();
 
-            Uint32 currentTime = SDL_GetTicks();
-            if (currentTime > lastTime + FRAME_DELAY) {
-                frame = (frame + 1) % TOTAL_FRAMES;
-                lastTime = currentTime;
-            }
+            const Uint32 currentTime = SDL_GetTicks();
+            const float deltaTime = (currentTime - lastTime) / 1000.0f;
+            lastTime = currentTime;
 
-            player->render(frame);
+            SDL_RenderClear(renderer);
 
+            player->update(currentTime, deltaTime);
+            player->render();
+
+            SDL_RenderPresent(renderer);
             SDL_Delay(16);
         }
 

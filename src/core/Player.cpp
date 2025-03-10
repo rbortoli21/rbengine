@@ -14,7 +14,7 @@ RB_ENGINE_NS
     constexpr int PLAYER_HEIGHT = 64;
 
     Player::Player(SDL_Renderer **renderer)
-        : renderer(*renderer), texture(nullptr) {
+        : renderer(*renderer) {
     }
 
     bool Player::init() {
@@ -23,46 +23,115 @@ RB_ENGINE_NS
             return false;
         }
 
-        texture = loadTexture("../src/assets/player/idle/idle.png", renderer);
-        if (!texture) {
-            return false;
-        }
+        idleTexture = loadTexture("../src/assets/player/idle/idle.png", renderer);
+        idleLeftTexture = loadTexture("../src/assets/player/idle/idle_left.png", renderer);
+        runLeftTexture = loadTexture("../src/assets/player/idle/run_left.png", renderer);
+        runRightTexture = loadTexture("../src/assets/player/idle/run_right.png", renderer);
+        runTurnAroundRightTexture = loadTexture("../src/assets/player/idle/run_turnaround_left.png", renderer);
 
-        velocity = 5;
-        x = 100;
-        y = 100;
+        velocity = 130.0f;
+        x = 100.0f;
+        y = 100.0f;
 
         return true;
     }
 
-    void Player::render(int currentFrame) {
-        handleInput();
+    void Player::update(const int currentTime, const float deltaTime) {
+        const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
+        changeState(currentKeyStates);
 
-        constexpr int frameWidth = 1440 / 18;
-        constexpr int frameHeight = 80;
+        const float velocityWithDeltaTime = velocity * deltaTime;
 
-        const SDL_Rect srcRect = {currentFrame * frameWidth, 0, frameWidth, frameHeight};
-        const SDL_Rect dstRect = {x, y, frameWidth, frameHeight};
+        if (currentKeyStates[SDL_SCANCODE_UP]) y -= velocityWithDeltaTime;
+        if (currentKeyStates[SDL_SCANCODE_DOWN]) y += velocityWithDeltaTime;
+        if (currentKeyStates[SDL_SCANCODE_LEFT]) x -= velocityWithDeltaTime;
+        if (currentKeyStates[SDL_SCANCODE_RIGHT]) x += velocityWithDeltaTime;
 
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, texture, &srcRect, &dstRect);
-        SDL_RenderPresent(renderer);
+        updateAnimationFrame(currentTime);
     }
 
-    void Player::handleInput() {
-        const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
-        if (currentKeyStates[SDL_SCANCODE_UP]) {
-            y -= velocity;
+    void Player::render() const {
+        SDL_Texture *currentTexture = nullptr;
+
+        switch (currentState) {
+            case PlayerState::IDLE:
+                currentTexture = idleTexture;
+                break;
+            case PlayerState::IDLE_LEFT:
+                currentTexture = idleLeftTexture;
+                break;
+            case PlayerState::RUNNING_LEFT:
+                currentTexture = runLeftTexture;
+                break;
+            case PlayerState::RUNNING_RIGHT:
+                currentTexture = runRightTexture;
+                break;
+            case PlayerState::TURN_AROUND_RIGHT:
+                currentTexture = runTurnAroundRightTexture;
+                break;
+            case PlayerState::TURN_AROUND_LEFT:
+                currentTexture = runTurnAroundRightTexture;
+                break;
         }
-        if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-            y += velocity;
+
+        const SDL_Rect srcRect = {currentFrame * frameWidth, 0, frameWidth, frameHeight};
+        const SDL_Rect dstRect = {static_cast<int>(x), static_cast<int>(y), frameWidth, frameHeight};
+
+        SDL_RenderCopy(renderer, currentTexture, &srcRect, &dstRect);
+    }
+
+    void Player::changeState(const Uint8 *keyStates) {
+        PlayerState newState;
+
+        const bool leftPressed = keyStates[SDL_SCANCODE_LEFT];
+        const bool rightPressed = keyStates[SDL_SCANCODE_RIGHT];
+
+        if (leftPressed && rightPressed)
+            newState = PlayerState::IDLE;
+        else if (leftPressed && previousState == PlayerState::RUNNING_RIGHT)
+            newState = PlayerState::TURN_AROUND_LEFT;
+        else if (rightPressed && previousState == PlayerState::RUNNING_LEFT)
+            newState = PlayerState::TURN_AROUND_RIGHT;
+        else if (leftPressed)
+            newState = PlayerState::RUNNING_LEFT;
+        else if (rightPressed)
+            newState = PlayerState::RUNNING_RIGHT;
+        else {
+            if (previousState == PlayerState::RUNNING_LEFT || previousState == PlayerState::IDLE_LEFT)
+                newState = PlayerState::IDLE_LEFT;
+            else
+                newState = PlayerState::IDLE;
         }
-        if (currentKeyStates[SDL_SCANCODE_LEFT]) {
-            x -= velocity;
+
+        if (newState != currentState) {
+            switch (newState) {
+                case PlayerState::IDLE:
+                case PlayerState::IDLE_LEFT:
+                    totalFrames = 18;
+                    frameWidth = 1440 / totalFrames;
+                    frameHeight = 80;
+                    break;
+                case PlayerState::RUNNING_LEFT:
+                case PlayerState::RUNNING_RIGHT:
+                    totalFrames = 24;
+                    frameWidth = 1920 / totalFrames;
+                    frameHeight = 80;
+                    break;
+                case PlayerState::TURN_AROUND_LEFT:
+                case PlayerState::TURN_AROUND_RIGHT:
+                    totalFrames = 5;
+                    frameWidth = 400 / totalFrames;
+                    frameHeight = 64;
+                    break;
+            }
+
+            previousState = currentState;
+            currentState = newState;
         }
-        if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
-            x += velocity;
-        }
+    }
+
+    void Player::updateAnimationFrame(const int currentTime) {
+        currentFrame = (currentTime / 50) % totalFrames;
     }
 
     SDL_Texture *Player::loadTexture(const char *path, SDL_Renderer *renderer) {
@@ -72,7 +141,7 @@ RB_ENGINE_NS
             return nullptr;
         }
 
-        texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
         if (texture == nullptr) {
             std::cerr << "SDL_CreateTextureFromSurface error " << SDL_GetError() << std::endl;
         }
