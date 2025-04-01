@@ -5,49 +5,40 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <SDL_render.h>
+#include <string>
 
 #include "EngineDefines.h"
+#include "GameObject.h"
 
 RB_ENGINE_NS
-    enum class PlayerState {
-        IDLE,
-        IDLE_LEFT,
-        RUNNING_LEFT,
-        RUNNING_RIGHT,
-        TURN_AROUND_LEFT,
-        TURN_AROUND_RIGHT
-    };
+    struct Vector2D;
+    class Camera;
 
-    class Player {
+    class Player final : public GameObject {
     public:
-        explicit Player(SDL_Renderer **renderer);
+        Player() = default;
 
-        ~Player() = default;
+        ~Player() override = default;
 
-        bool init();
+        void load(const Vector2D &pos, int w, int h,
+                  const std::string &textureId) override;
 
-        void update(int currentTime, float deltaTime);
+        void update(float dt) override;
 
-        void render() const;
+        void render(SDL_Renderer *renderer, Camera *camera) override;
+
+        void handleInput();
 
     private:
-        void changeState(const Uint8 *keyStates);
+        int pot = 10;
+        int agi = 5;
+        int res = 100;
+        int currentHealth = 100;
 
-        void updateAnimationFrame(int currentTime);
-
-        static SDL_Texture *loadTexture(const char *path, SDL_Renderer *renderer);
-
-        PlayerState currentState = PlayerState::IDLE;
-        PlayerState previousState = currentState;
-        SDL_Renderer *renderer;
-        SDL_Texture *idleTexture = nullptr,
-                *idleLeftTexture = nullptr,
-                *runRightTexture = nullptr,
-                *runLeftTexture = nullptr,
-                *runTurnAroundRightTexture = nullptr;
-        float x = 0, y = 0, velocity = 0;
-        int totalFrames = 18, frameWidth = 80, frameHeight = 80, currentFrame = 0;
+        bool isGrounded = false;
+        bool isFacingRight = true;
     };
+
 
 RB_ENGINE_END_NS
 
