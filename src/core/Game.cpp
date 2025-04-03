@@ -73,7 +73,7 @@ RB_ENGINE_NS
             std::cerr << "Failed to load player texture!" << std::endl;
         }
 
-        if (!TextureManager::getInstance().load("player", "../src/assets/player/idle/run_right.png", renderer)) {
+        if (!TextureManager::getInstance().load("player_run", "../src/assets/player/idle/run_right.png", renderer)) {
             std::cerr << "Failed to load player run!" << std::endl;
         }
 
@@ -82,7 +82,7 @@ RB_ENGINE_NS
         }
 
         player = new Player();
-        player->load({100, 100}, 64, 64, "player");
+        player->load({100, 100}, 80, 80, "player");
 
         camera = new Camera();
         camera->setTarget(player->getPositionPtr());

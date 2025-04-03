@@ -58,21 +58,27 @@ RB_ENGINE_NS
         handleInput();
 
         if (isRunning) {
+            textureId = "player_run";
             totalFrames = runningFrames;
             frameWidth = runningWidth / runningFrames;
             frameHeight = spriteHeight;
             animTimer += dt;
 
-            if (animTimer >= animSpeed) {
-                animTimer -= animSpeed;
+            if (animTimer >= runAnimSpeed) {
+                animTimer -= runAnimSpeed;
                 currentFrame = (currentFrame + 1) % totalFrames;
             }
         } else if (isGrounded) {
+            textureId = "player";
             totalFrames = idleFrames;
             frameWidth = idleWidth / idleFrames;
             frameHeight = spriteHeight;
-            currentFrame = 0;
-            animTimer = 0.0f;
+            animTimer += dt;
+
+            if (animTimer >= idleAnimSpeed) {
+                animTimer -= idleAnimSpeed;
+                currentFrame = (currentFrame + 1) % totalFrames;
+            }
         } else {
             currentFrame = 0;
         }
