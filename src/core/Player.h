@@ -37,6 +37,19 @@ RB_ENGINE_NS
 
         bool isGrounded = false;
         bool isFacingRight = true;
+        bool isRunning = false;
+
+        int totalFrames = 1;
+        float animSpeed = 0.002f;
+        float animTimer = 0.0f;
+        int frameWidth = 0;
+        int frameHeight = 0;
+
+        int idleFrames = 18;
+        int runningFrames = 24;
+        int idleWidth = 1440;
+        int runningWidth = 1920;
+        int spriteHeight = 80;
     };
 
 

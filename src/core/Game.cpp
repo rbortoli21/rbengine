@@ -73,6 +73,14 @@ RB_ENGINE_NS
             std::cerr << "Failed to load player texture!" << std::endl;
         }
 
+        if (!TextureManager::getInstance().load("player", "../src/assets/player/idle/run_right.png", renderer)) {
+            std::cerr << "Failed to load player run!" << std::endl;
+        }
+
+        if (!TextureManager::getInstance().load("background", "../src/assets/jungle_background.jpg", renderer)) {
+            std::cerr << "Failed to load background texture!" << std::endl;
+        }
+
         player = new Player();
         player->load({100, 100}, 64, 64, "player");
 
@@ -115,6 +123,8 @@ RB_ENGINE_NS
     void Game::render() const {
         SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255); // Cornflower blue
         SDL_RenderClear(renderer);
+
+        TextureManager::getInstance().draw("background", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
 
         if (player && camera) {
             player->render(renderer, camera);

@@ -2,6 +2,7 @@
 #include <ostream>
 #include <SDL_stdinc.h>
 #include <SDL_timer.h>
+#include <SDL_video.h>
 
 #include "core/Constants.h"
 #include "core/Game.h"

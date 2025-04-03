@@ -21,25 +21,34 @@ RB_ENGINE_NS
                       const std::string &textureId) {
         GameObject::load(pos, w, h, textureId);
         currentHealth = res;
+
+        totalFrames = idleFrames;
+        frameWidth = idleWidth / idleFrames;
+        frameHeight = spriteHeight;
+
         std::cout << "Player loaded at (" << pos.x << ", " << pos.y << ")" << std::endl;
     }
 
     void Player::handleInput() {
         velocity.x = 0;
+        isRunning = false;
 
         if (InputManager::getInstance().isActionPressed(GameAction::MOVE_LEFT)) {
             velocity.x = -200.0f * (agi / 5.0f);
             isFacingRight = false;
             flip = SDL_FLIP_HORIZONTAL;
+            if (isGrounded) isRunning = true;
         }
         if (InputManager::getInstance().isActionPressed(GameAction::MOVE_RIGHT)) {
             velocity.x = 200.0f * (agi / 5.0f);
             isFacingRight = true;
             flip = SDL_FLIP_NONE;
+            if (isGrounded) isRunning = true;
         }
 
         if (InputManager::getInstance().isActionTriggered(GameAction::JUMP) && isGrounded) {
             velocity.y = -450.0f;
+            isRunning = false;
             isGrounded = false;
             std::cout << "Jump!" << std::endl;
         }
@@ -47,6 +56,26 @@ RB_ENGINE_NS
 
     void Player::update(float dt) {
         handleInput();
+
+        if (isRunning) {
+            totalFrames = runningFrames;
+            frameWidth = runningWidth / runningFrames;
+            frameHeight = spriteHeight;
+            animTimer += dt;
+
+            if (animTimer >= animSpeed) {
+                animTimer -= animSpeed;
+                currentFrame = (currentFrame + 1) % totalFrames;
+            }
+        } else if (isGrounded) {
+            totalFrames = idleFrames;
+            frameWidth = idleWidth / idleFrames;
+            frameHeight = spriteHeight;
+            currentFrame = 0;
+            animTimer = 0.0f;
+        } else {
+            currentFrame = 0;
+        }
 
         if (!isGrounded) {
             acceleration.y = 980.0f; // Pixels/second^2
@@ -57,17 +86,13 @@ RB_ENGINE_NS
         velocity += acceleration * dt;
         position += velocity * dt;
 
-        if (position.y + height > SCREEN_HEIGHT - 50) {
-            position.y = SCREEN_HEIGHT - 50 - height;
-            velocity.y = 0;
+        const float floorLevel = 600.0f;
+        if (position.y + height > floorLevel) {
+            position.y = floorLevel - height;
+            if (velocity.y > 0) {
+                velocity.y = 0;
+            }
             isGrounded = true;
-        }
-
-        if (position.x < 0) {
-            position.x = 0;
-        }
-        if (position.x + width > SCREEN_WIDTH) {
-            position.x = SCREEN_WIDTH - width;
         }
 
         // Update animation frame/row based on state (running, idle, jumping)
@@ -75,12 +100,21 @@ RB_ENGINE_NS
     }
 
     void Player::render(SDL_Renderer *renderer, Camera *camera) {
-        Vector2D screenPos = camera->worldToScreen(position);
+        const Vector2D screenPos = camera->worldToScreen(position);
 
-        TextureManager::getInstance().draw(textureId,
-                                           static_cast<int>(screenPos.x),
-                                           static_cast<int>(screenPos.y),
-                                           width, height, renderer, flip);
+        TextureManager::getInstance().drawFrame(
+            textureId,
+            static_cast<int>(screenPos.x),
+            static_cast<int>(screenPos.y),
+            frameWidth,
+            frameHeight,
+            0,
+            currentFrame,
+            renderer,
+            0.0,
+            nullptr,
+            flip
+        );
     }
 
 RB_ENGINE_END_NS

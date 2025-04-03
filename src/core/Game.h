@@ -4,9 +4,10 @@
 #pragma once
 #ifndef GAME_H
 #define GAME_H
+#include <SDL_render.h>
+
 #include "Constants.h"
 #include "EngineDefines.h"
-#include "Window.h"
 
 RB_ENGINE_NS
     class Camera;

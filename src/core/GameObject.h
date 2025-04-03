@@ -54,6 +54,7 @@ RB_ENGINE_NS
         std::string textureId;
         int currentFrame = 0;
         int currentRow = 0;
+        int spriteRow = 0;
         SDL_RendererFlip flip = SDL_FLIP_NONE;
     };
 
