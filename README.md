@@ -50,11 +50,6 @@ The world of Sylvandar is falling apart—forests are petrifying, lakes are dryi
   - Temple Sentinels (advanced enemies with elemental resistances).
   - Dark Entity (final boss).
 
-## Endings
-
-- **Restoration Ending**: Lyra restores the Bow of Balance and becomes the new Guardian, saving Sylvandar.
-- **Redemption Ending**: Lyra discovers the dark entity is her corrupted father and purifies the Bow, saving him and restoring balance.
-
 ## Technologies Used
 
 - **C++**: Core programming language.
