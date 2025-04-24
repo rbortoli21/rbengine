@@ -45,7 +45,7 @@ RB_ENGINE_NS
             SDL_SCANCODE_SPACE, // JUMP
             SDL_SCANCODE_LSHIFT, // DODGE
             SDL_SCANCODE_UNKNOWN, // AIM
-            SDL_SCANCODE_UNKNOWN // FIRE
+            SDL_SCANCODE_P // FIRE
         };
     };
 

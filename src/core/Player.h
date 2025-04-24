@@ -6,7 +6,9 @@
 #define PLAYER_H
 #include <SDL_render.h>
 #include <string>
+#include <vector>
 
+#include "Arrow.h"
 #include "EngineDefines.h"
 #include "GameObject.h"
 
@@ -31,7 +33,7 @@ RB_ENGINE_NS
 
     private:
         int pot = 10;
-        int agi = 5;
+        int agi = 7;
         int res = 100;
         int currentHealth = 100;
 
@@ -53,6 +55,10 @@ RB_ENGINE_NS
         int runningWidth = 1920;
 
         int spriteHeight = 80;
+
+        std::vector<Arrow> arrows;
+        float arrowSpeed = 1100.0f;
+        std::string arrowTextureId = "arrow";
     };
 
 

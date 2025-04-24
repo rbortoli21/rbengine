@@ -22,24 +22,28 @@ RB_ENGINE_NS
         bool load(const std::string &id, const std::string &filename,
                   SDL_Renderer *renderer);
 
-        void draw(const std::string &id, int x, int y, int width, int height,
-                  SDL_Renderer *renderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
+        void draw(const std::string &id, int x, int y, int width,
+                  int height, SDL_Renderer *renderer,
+                  SDL_RendererFlip flip = SDL_FLIP_NONE, float scaleX = 1.f, float scaleY = 1.f);
 
-        void drawFrame(const std::string &id, int x, int y, int width, int height,
-                       int currentRow, int currentFrame, SDL_Renderer *renderer,
-                       double angle = 0, SDL_Point *center = nullptr,
-                       SDL_RendererFlip flip = SDL_FLIP_NONE);
+        void drawFrame(const std::string &id, int x, int y, int width,
+                       int height, int currentRow, int currentFrame,
+                       SDL_Renderer *renderer, double angle,
+                       SDL_Point *center, SDL_RendererFlip flip,
+                       int originalWidth, int originalHeight);
 
         void clearTextureMap();
 
-    private:
+    private
+    :
         TextureManager() = default;
 
         ~TextureManager() = default;
 
         TextureManager(const TextureManager &) = delete;
 
-        TextureManager &operator=(const TextureManager &) = delete;
+        TextureManager &operator=(const TextureManager &)
+        = delete;
 
         std::map<std::string, SDL_Texture *> textureMap;
     };

@@ -34,7 +34,7 @@ RB_ENGINE_NS
 
     void TextureManager::draw(const std::string &id, const int x, const int y, const int width,
                               const int height, SDL_Renderer *renderer,
-                              const SDL_RendererFlip flip) {
+                              const SDL_RendererFlip flip, float scaleX, float scaleY) {
         SDL_Rect srcRect;
         SDL_Rect destRect;
 
@@ -45,8 +45,8 @@ RB_ENGINE_NS
 
         destRect.x = x;
         destRect.y = y;
-        destRect.w = width;
-        destRect.h = height;
+        destRect.w = static_cast<int>(width * scaleX);
+        destRect.h = static_cast<int>(height * scaleY);
 
         if (textureMap.contains(id)) {
             SDL_RenderCopyEx(renderer, textureMap[id], &srcRect, &destRect, 0,
@@ -60,14 +60,15 @@ RB_ENGINE_NS
     void TextureManager::drawFrame(const std::string &id, int x, int y, int width,
                                    int height, int currentRow, int currentFrame,
                                    SDL_Renderer *renderer, double angle,
-                                   SDL_Point *center, SDL_RendererFlip flip) {
+                                   SDL_Point *center, SDL_RendererFlip flip,
+                                   int originalWidth, int originalHeight) {
         SDL_Rect srcRect;
         SDL_Rect destRect;
 
-        srcRect.x = width * currentFrame;
-        srcRect.y = height * currentRow;
-        srcRect.w = width;
-        srcRect.h = height;
+        srcRect.x = originalWidth * currentFrame;
+        srcRect.y = originalHeight * currentRow;
+        srcRect.w = originalWidth;
+        srcRect.h = originalHeight;
 
         destRect.x = x;
         destRect.y = y;

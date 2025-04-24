@@ -5,6 +5,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include <SDL_render.h>
+#include <SDL_ttf.h>
 
 #include "Constants.h"
 #include "EngineDefines.h"
@@ -47,6 +48,7 @@ RB_ENGINE_NS
 
         Game &operator=(const Game &) = delete;
 
+        TTF_Font *hudFont = nullptr;
         SDL_Window *window = nullptr;
         SDL_Renderer *renderer = nullptr;
         bool running = false;
@@ -58,6 +60,9 @@ RB_ENGINE_NS
 
         int levelWidth = 2000;
         int levelHeight = SCREEN_HEIGHT;
+
+        int playerHealth = 100;
+        int playerArrows = 10;
     };
 
 RB_ENGINE_END_NS

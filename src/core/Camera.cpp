@@ -7,8 +7,8 @@
 RB_ENGINE_NS
     void Camera::update(const int levelWidth, const int levelHeight) {
         if (target) {
-            position.x = target->x - viewWidth / 2.0f;
-            position.y = target->y - viewHeight / 2.0f;
+            position.x = target->x - viewWidth;
+            position.y = target->y - viewHeight;
 
             if (position.x < 0) {
                 position.x = 0;

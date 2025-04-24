@@ -1,9 +1,6 @@
-//
-// Created by bortoli on 07/03/25.
-//
-
 #include "Player.h"
 
+#include <algorithm>
 #include <iostream>
 #include <ostream>
 
@@ -17,14 +14,14 @@ RB_ENGINE_NS
     struct Vector2D;
     class Camera;
 
-    void Player::load(const Vector2D &pos, int w, int h,
-                      const std::string &textureId) {
+    void Player::load(const Vector2D &pos, int w, int h, const std::string &textureId) {
         GameObject::load(pos, w, h, textureId);
         currentHealth = res;
 
-        totalFrames = idleFrames;
         frameWidth = idleWidth / idleFrames;
         frameHeight = spriteHeight;
+
+        totalFrames = idleFrames;
 
         std::cout << "Player loaded at (" << pos.x << ", " << pos.y << ")" << std::endl;
     }
@@ -52,31 +49,39 @@ RB_ENGINE_NS
             isGrounded = false;
             std::cout << "Jump!" << std::endl;
         }
+
+        if (InputManager::getInstance().isActionTriggered(GameAction::FIRE)) {
+            Vector2D arrowDirection = isFacingRight ? Vector2D(1, 0) : Vector2D(-1, 0);
+
+            Vector2D arrowPosition = position;
+            arrowPosition.x += isFacingRight ? frameWidth : 0;
+            arrowPosition.y += frameHeight * 1.3f;
+            SDL_RendererFlip arrowFlip = !isFacingRight ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+
+            arrows.emplace_back(arrowPosition, arrowDirection, arrowSpeed, arrowTextureId, arrowFlip);
+            std::cout << "Arrow fired from (" << arrowPosition.x << ", " << arrowPosition.y << ")" << std::endl;
+        }
     }
 
     void Player::update(float dt) {
         handleInput();
 
+        animTimer += dt;
+
         if (isRunning) {
             textureId = "player_run";
             totalFrames = runningFrames;
-            frameWidth = runningWidth / runningFrames;
-            frameHeight = spriteHeight;
-            animTimer += dt;
 
             if (animTimer >= runAnimSpeed) {
-                animTimer -= runAnimSpeed;
+                animTimer = 0.0f;
                 currentFrame = (currentFrame + 1) % totalFrames;
             }
         } else if (isGrounded) {
             textureId = "player";
             totalFrames = idleFrames;
-            frameWidth = idleWidth / idleFrames;
-            frameHeight = spriteHeight;
-            animTimer += dt;
 
             if (animTimer >= idleAnimSpeed) {
-                animTimer -= idleAnimSpeed;
+                animTimer = 0.0f;
                 currentFrame = (currentFrame + 1) % totalFrames;
             }
         } else {
@@ -101,26 +106,54 @@ RB_ENGINE_NS
             isGrounded = true;
         }
 
-        // Update animation frame/row based on state (running, idle, jumping)
-        // currentFrame = int(((SDL_GetTicks() / 100) % 6)); // Example animation
+        for (auto &arrow: arrows) {
+            arrow.update(dt);
+        }
+
+        arrows.erase(std::remove_if(arrows.begin(), arrows.end(),
+                                    [](const Arrow &arrow) {
+                                        return arrow.isOffScreen(SCREEN_WIDTH, SCREEN_HEIGHT);
+                                    }),
+                     arrows.end());
     }
 
     void Player::render(SDL_Renderer *renderer, Camera *camera) {
         const Vector2D screenPos = camera->worldToScreen(position);
 
+        constexpr int scaleFactor = 3;
+
+        const int originalFrameWidth = frameWidth;
+        const int originalFrameHeight = frameHeight;
+
+        const int scaledWidth = originalFrameWidth * scaleFactor;
+        const int scaledHeight = originalFrameHeight * scaleFactor;
+
+        SDL_Rect destRect;
+        destRect.x = static_cast<int>(screenPos.x);
+        destRect.y = static_cast<int>(screenPos.y);
+        destRect.w = scaledWidth;
+        destRect.h = scaledHeight;
+
         TextureManager::getInstance().drawFrame(
             textureId,
-            static_cast<int>(screenPos.x),
-            static_cast<int>(screenPos.y),
-            frameWidth,
-            frameHeight,
+            destRect.x,
+            destRect.y,
+            destRect.w,
+            destRect.h,
             0,
             currentFrame,
             renderer,
             0.0,
             nullptr,
-            flip
+            flip,
+            originalFrameWidth,
+            originalFrameHeight
         );
+
+        std::cout << arrows.size() << std::endl;
+        for (auto &arrow: arrows) {
+            arrow.render(renderer);
+        }
     }
 
 RB_ENGINE_END_NS

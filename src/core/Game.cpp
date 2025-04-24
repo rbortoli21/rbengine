@@ -60,6 +60,11 @@ RB_ENGINE_NS
 
         SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255);
 
+        hudFont = TTF_OpenFont("../src/assets/fonts/poppins.ttf", 24);
+        if (!hudFont) {
+            std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+        }
+
         running = true;
         std::cout << "SDL Initialized Successfully" << std::endl;
 
@@ -77,12 +82,16 @@ RB_ENGINE_NS
             std::cerr << "Failed to load player run!" << std::endl;
         }
 
+        if (!TextureManager::getInstance().load("arrow", "../src/assets/player/arrow.png", renderer)) {
+            std::cerr << "Failed to load arrow texture!" << std::endl;
+        }
+
         if (!TextureManager::getInstance().load("background", "../src/assets/jungle_background.jpg", renderer)) {
             std::cerr << "Failed to load background texture!" << std::endl;
         }
 
         player = new Player();
-        player->load({100, 100}, 80, 80, "player");
+        player->load({50, 1000}, 80, 30, "player");
 
         camera = new Camera();
         camera->setTarget(player->getPositionPtr());
@@ -130,6 +139,23 @@ RB_ENGINE_NS
             player->render(renderer, camera);
         }
 
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        const SDL_Rect healthBar = {20, 20, playerHealth * 2, 20};
+        SDL_RenderFillRect(renderer, &healthBar);
+
+        if (hudFont) {
+            constexpr SDL_Color white = {255, 255, 255, 255};
+            const std::string arrowText = "Arrows: " + std::to_string(playerArrows);
+            SDL_Surface *textSurface = TTF_RenderText_Solid(hudFont, arrowText.c_str(), white);
+            SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+            const SDL_Rect textRect = {20, 50, textSurface->w, textSurface->h};
+            SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
+
+            SDL_FreeSurface(textSurface);
+            SDL_DestroyTexture(textTexture);
+        }
+
         SDL_RenderPresent(renderer);
     }
 
@@ -147,6 +173,11 @@ RB_ENGINE_NS
         SDL_DestroyWindow(window);
         renderer = nullptr;
         window = nullptr;
+
+        if (hudFont) {
+            TTF_CloseFont(hudFont);
+            hudFont = nullptr;
+        }
 
         // Mix_Quit();
         // TTF_Quit();
