@@ -31,11 +31,20 @@ RB_ENGINE_NS
 
         void handleInput();
 
+        [[nodiscard]] int getArrowsQuantity() const {
+            return arrowsQuantity;
+        }
+
+        [[nodiscard]] int getHealth() const {
+            return currentHealth;
+        }
+
     private:
         int pot = 10;
         int agi = 7;
         int res = 100;
         int currentHealth = 100;
+        int arrowsQuantity = 20;
 
         bool isGrounded = false;
         bool isFacingRight = true;

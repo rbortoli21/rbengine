@@ -58,8 +58,11 @@ RB_ENGINE_NS
             arrowPosition.y += frameHeight * 1.3f;
             SDL_RendererFlip arrowFlip = !isFacingRight ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
-            arrows.emplace_back(arrowPosition, arrowDirection, arrowSpeed, arrowTextureId, arrowFlip);
-            std::cout << "Arrow fired from (" << arrowPosition.x << ", " << arrowPosition.y << ")" << std::endl;
+            if (arrowsQuantity > 0) {
+                arrows.emplace_back(arrowPosition, arrowDirection, arrowSpeed, arrowTextureId, arrowFlip);
+                std::cout << "Arrow fired from (" << arrowPosition.x << ", " << arrowPosition.y << ")" << std::endl;
+                arrowsQuantity -= 1;
+            }
         }
     }
 

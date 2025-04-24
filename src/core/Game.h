@@ -60,9 +60,6 @@ RB_ENGINE_NS
 
         int levelWidth = 2000;
         int levelHeight = SCREEN_HEIGHT;
-
-        int playerHealth = 100;
-        int playerArrows = 10;
     };
 
 RB_ENGINE_END_NS

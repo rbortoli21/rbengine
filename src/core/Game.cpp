@@ -139,21 +139,23 @@ RB_ENGINE_NS
             player->render(renderer, camera);
         }
 
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        const SDL_Rect healthBar = {20, 20, playerHealth * 2, 20};
-        SDL_RenderFillRect(renderer, &healthBar);
+        if (player) {
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+            const SDL_Rect healthBar = {20, 20, player->getHealth() * 2, 20};
+            SDL_RenderFillRect(renderer, &healthBar);
 
-        if (hudFont) {
-            constexpr SDL_Color white = {255, 255, 255, 255};
-            const std::string arrowText = "Arrows: " + std::to_string(playerArrows);
-            SDL_Surface *textSurface = TTF_RenderText_Solid(hudFont, arrowText.c_str(), white);
-            SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+            if (hudFont) {
+                constexpr SDL_Color white = {255, 255, 255, 255};
+                const std::string arrowText = "Arrows: " + std::to_string(player->getArrowsQuantity());
+                SDL_Surface *textSurface = TTF_RenderText_Solid(hudFont, arrowText.c_str(), white);
+                SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
-            const SDL_Rect textRect = {20, 50, textSurface->w, textSurface->h};
-            SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
+                const SDL_Rect textRect = {20, 50, textSurface->w, textSurface->h};
+                SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
 
-            SDL_FreeSurface(textSurface);
-            SDL_DestroyTexture(textTexture);
+                SDL_FreeSurface(textSurface);
+                SDL_DestroyTexture(textTexture);
+            }
         }
 
         SDL_RenderPresent(renderer);
