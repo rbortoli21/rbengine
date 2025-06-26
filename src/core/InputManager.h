@@ -10,7 +10,21 @@
 
 
 RB_ENGINE_NS
-    enum class GameAction { MOVE_LEFT, MOVE_RIGHT, JUMP, DODGE, AIM, FIRE };
+    enum class GameAction { 
+        MOVE_LEFT, 
+        MOVE_RIGHT, 
+        JUMP, 
+        DODGE, 
+        CLIMB,
+        AIM, 
+        FIRE,
+        USE_HEALTH_POTION,
+        UPGRADE_ABILITY_1,
+        UPGRADE_ABILITY_2,
+        UPGRADE_ABILITY_3,
+        UPGRADE_ABILITY_4,
+        UPGRADE_ABILITY_5
+    };
 
     class InputManager {
     public:
@@ -39,13 +53,20 @@ RB_ENGINE_NS
         const Uint8 *currentKeyStates;
         Uint8 previousKeyStates[SDL_NUM_SCANCODES];
 
-        SDL_Scancode actionToKey[6] = {
+        SDL_Scancode actionToKey[13] = {
             SDL_SCANCODE_A, // MOVE_LEFT
             SDL_SCANCODE_D, // MOVE_RIGHT
             SDL_SCANCODE_SPACE, // JUMP
             SDL_SCANCODE_LSHIFT, // DODGE
+            SDL_SCANCODE_W, // CLIMB
             SDL_SCANCODE_UNKNOWN, // AIM
-            SDL_SCANCODE_P // FIRE
+            SDL_SCANCODE_P, // FIRE
+            SDL_SCANCODE_H, // USE_HEALTH_POTION
+            SDL_SCANCODE_1, // UPGRADE_ABILITY_1
+            SDL_SCANCODE_2, // UPGRADE_ABILITY_2
+            SDL_SCANCODE_3, // UPGRADE_ABILITY_3
+            SDL_SCANCODE_4, // UPGRADE_ABILITY_4
+            SDL_SCANCODE_5  // UPGRADE_ABILITY_5
         };
     };
 

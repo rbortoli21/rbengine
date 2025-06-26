@@ -23,6 +23,8 @@ RB_ENGINE_NS
 
         bool isOffScreen(int screenWidth, int screenHeight) const;
 
+        Vector2D getPosition() const { return position; }
+
     private:
         Vector2D position;
         Vector2D direction;

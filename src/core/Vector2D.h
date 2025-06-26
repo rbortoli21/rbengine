@@ -29,6 +29,10 @@ RB_ENGINE_NS
         Vector2D operator*(float scalar) const {
             return Vector2D(x * scalar, y * scalar);
         }
+
+        Vector2D operator-(const Vector2D &other) const {
+            return {x - other.x, y - other.y};
+        }
     };
 
 RB_ENGINE_END_NS

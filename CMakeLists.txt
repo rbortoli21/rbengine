@@ -31,5 +31,11 @@ add_executable(rbengine src/main.cpp
         src/core/Arrow.h
         src/core/Menu.cpp
         src/core/Menu.h
+        src/core/Inventory.cpp
+        src/core/Inventory.h
+        src/core/CharacterProgression.cpp
+        src/core/CharacterProgression.h
+        src/core/UIFeedback.cpp
+        src/core/UIFeedback.h
 )
 target_link_libraries(rbengine ${SDL2_LIBRARIES} SDL2_ttf SDL2_image)

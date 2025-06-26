@@ -11,6 +11,9 @@
 #include "Arrow.h"
 #include "EngineDefines.h"
 #include "GameObject.h"
+#include "Inventory.h"
+#include "CharacterProgression.h"
+#include "UIFeedback.h"
 
 RB_ENGINE_NS
     struct Vector2D;
@@ -31,25 +34,56 @@ RB_ENGINE_NS
 
         void handleInput();
 
-        [[nodiscard]] int getArrowsQuantity() const {
-            return arrowsQuantity;
-        }
-
-        [[nodiscard]] int getHealth() const {
-            return currentHealth;
-        }
+        // Getters for UI
+        [[nodiscard]] int getArrowsQuantity() const { return inventory.getCurrentArrows(); }
+        [[nodiscard]] int getHealth() const { return currentHealth; }
+        [[nodiscard]] int getMaxHealth() const { return maxHealth; }
+        [[nodiscard]] int getHealthPotions() const { return inventory.getHealthPotions(); }
+        [[nodiscard]] int getMysticFeathers() const { return progression.getMysticFeathers(); }
+        
+        // Attribute getters
+        [[nodiscard]] int getPot() const { return progression.getAttribute("POT"); }
+        [[nodiscard]] int getAgi() const { return progression.getAttribute("AGI"); }
+        [[nodiscard]] int getRes() const { return progression.getAttribute("RES"); }
+        
+        // Systems access
+        [[nodiscard]] const Inventory& getInventory() const { return inventory; }
+        [[nodiscard]] const CharacterProgression& getProgression() const { return progression; }
+        UIFeedback& getUIFeedback() { return uiFeedback; }
+        
+        // Combat
+        void takeDamage(int damage);
+        std::vector<Arrow>& getArrows() { return arrows; }
 
     private:
-        int pot = 10;
-        int agi = 7;
-        int res = 100;
+        // Core systems
+        Inventory inventory;
+        CharacterProgression progression;
+        UIFeedback uiFeedback;
+        
+        // Health and stats
         int currentHealth = 100;
-        int arrowsQuantity = 20;
-
+        int maxHealth = 100;
+        
+        // Movement states
         bool isGrounded = false;
         bool isFacingRight = true;
         bool isRunning = false;
-
+        bool isDodging = false;
+        bool isClimbing = false;
+        bool canClimb = false;
+        
+        // Dodge mechanics
+        float dodgeCooldown = 0.0f;
+        float dodgeDuration = 0.0f;
+        float dodgeSpeed = 400.0f;
+        Vector2D dodgeDirection;
+        
+        // Climbing mechanics
+        float climbSpeed = 150.0f;
+        bool nearClimbableSurface = false;
+        
+        // Animation
         int totalFrames = 1;
         float animTimer = 0.0f;
         int frameWidth = 0;
@@ -65,9 +99,26 @@ RB_ENGINE_NS
 
         int spriteHeight = 80;
 
+        // Combat
         std::vector<Arrow> arrows;
         float arrowSpeed = 1100.0f;
         std::string arrowTextureId = "arrow";
+        float shootCooldown = 0.0f;
+        float baseShootCooldown = 0.5f;
+        
+        // Health regeneration
+        float healthRegenTimer = 0.0f;
+        float healthRegenInterval = 1.0f;
+        
+        // Private methods
+        void updateMovement(float dt);
+        void updateCombat(float dt);
+        void updateHealthRegeneration(float dt);
+        void handleDodge(float dt);
+        void handleClimbing(float dt);
+        void updateAnimation(float dt);
+        void applyProgressionEffects();
+        void heal(int amount);
     };
 
 

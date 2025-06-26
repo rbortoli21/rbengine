@@ -10,8 +10,6 @@
 #include "EngineDefines.h"
 #include "Vector2D.h"
 
-#endif //GAMEOBJECT_H
-
 RB_ENGINE_NS
     struct Vector2D;
     class Camera;
@@ -56,6 +54,9 @@ RB_ENGINE_NS
         int currentRow = 0;
         int spriteRow = 0;
         SDL_RendererFlip flip = SDL_FLIP_NONE;
+        bool isGrounded = false;
     };
 
 RB_ENGINE_END_NS
+
+#endif //GAMEOBJECT_H

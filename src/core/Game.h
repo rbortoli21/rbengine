@@ -6,6 +6,7 @@
 #define GAME_H
 #include <SDL_render.h>
 #include <SDL_ttf.h>
+#include <vector>
 
 #include "Constants.h"
 #include "EngineDefines.h"
@@ -13,6 +14,7 @@
 RB_ENGINE_NS
     class Camera;
     class Player;
+    class Enemy;
 
     class Game {
     public:
@@ -28,7 +30,7 @@ RB_ENGINE_NS
 
         void handleEvents();
 
-        void update(float dt) const;
+        void update(float dt);
 
         void render() const;
 
@@ -48,7 +50,21 @@ RB_ENGINE_NS
 
         Game &operator=(const Game &) = delete;
 
+        void renderHUD() const;
+        void renderHealthBar() const;
+        void renderInventoryInfo() const;
+        void renderAttributes() const;
+        void renderControls() const;
+        
+        // Enemy management
+        void spawnEnemies();
+        void updateEnemies(float dt) const;
+        void renderEnemies() const;
+        void checkCollisions();
+        void cleanupDeadEnemies();
+
         TTF_Font *hudFont = nullptr;
+        TTF_Font *smallFont = nullptr;
         SDL_Window *window = nullptr;
         SDL_Renderer *renderer = nullptr;
         bool running = false;
@@ -57,6 +73,11 @@ RB_ENGINE_NS
 
         Player *player = nullptr;
         Camera *camera = nullptr;
+        std::vector<Enemy*> enemies;
+
+        // Collision cooldown to prevent excessive damage
+        float playerDamageCooldown = 0.0f;
+        static constexpr float DAMAGE_COOLDOWN_TIME = 1.0f;
 
         int levelWidth = 2000;
         int levelHeight = SCREEN_HEIGHT;

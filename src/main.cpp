@@ -15,7 +15,7 @@ bool showMenu(SDL_Renderer *renderer) {
         return false;
     }
 
-    TTF_Font *font = TTF_OpenFont("../src/assets/fonts/poppins.ttf", 48);
+    TTF_Font *font = TTF_OpenFont("src/assets/fonts/poppins.ttf", 48);
     if (!font) {
         std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
         return false;
