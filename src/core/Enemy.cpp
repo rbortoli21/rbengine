@@ -205,20 +205,11 @@ RB_ENGINE_NS
         
         const Vector2D screenPos = camera->worldToScreen(position);
         
-        // Use actual PNG dimensions instead of frame dimensions
-        constexpr int actualWidth = 634;  // Use the detected PNG width
-        constexpr int actualHeight = 512; // Use the detected PNG height
-        constexpr float scaleFactor = 0.1f; // Scale down the large PNG
+        constexpr int actualWidth = 634;
+        constexpr int actualHeight = 512;
+        constexpr float scaleFactor = 0.1f;
         const int scaledWidth = static_cast<int>(actualWidth * scaleFactor);
         const int scaledHeight = static_cast<int>(actualHeight * scaleFactor);
-        
-        // Debug output
-        static int debugCounter = 0;
-        if (debugCounter++ % 120 == 0) { // Print every 2 seconds
-            std::cout << "Enemy render debug - PNG: " << actualWidth << "x" << actualHeight 
-                      << " Scaled: " << scaledWidth << "x" << scaledHeight 
-                      << " Pos: (" << screenPos.x << ", " << screenPos.y << ")" << std::endl;
-        }
         
         SDL_Rect destRect;
         destRect.x = static_cast<int>(screenPos.x);
@@ -227,17 +218,16 @@ RB_ENGINE_NS
         destRect.h = scaledHeight;
         
         if (totalFrames <= 1) {
-            // For single-frame images, use the actual texture dimensions
             TextureManager::getInstance().draw(
                 textureId,
                 destRect.x,
                 destRect.y,
-                actualWidth,  // Use actual PNG width as source
-                actualHeight, // Use actual PNG height as source
+                actualWidth,
+                actualHeight,
                 renderer,
                 flip,
-                scaleFactor,  // Scale X
-                scaleFactor   // Scale Y
+                scaleFactor,
+                scaleFactor
             );
         } else {
             TextureManager::getInstance().drawFrame(
@@ -257,11 +247,7 @@ RB_ENGINE_NS
             );
         }
         
-        // Render health bar
         if (currentHealth < maxHealth) {
-            constexpr SDL_Color red = {255, 0, 0, 255};
-            constexpr SDL_Color green = {0, 255, 0, 255};
-            
             float healthPercent = static_cast<float>(currentHealth) / maxHealth;
             
             SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
